@@ -1,2 +1,2 @@
-# mern-app-sample
-A React/Redux, Node.js, MongoDB sample application
+# MERN Application Sample
+A sample React/Redux, Node.js, MongoDB application

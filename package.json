@@ -1,0 +1,37 @@
+{
+  "name": "mern-app-sample",
+  "version": "0.0.1",
+  "description": "A sample React/Redux, Node.js, MongoDB application",
+  "main": "index.js",
+  "scripts": {
+    "babel-node": "babel-node --presets=env",
+    "start:dev": "nodemon --exec npm run babel-node -- ./index.js",
+    "test": "jest --config=jest.config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarceloNunes/mern-app-sample.git"
+  },
+  "author": "Marcelo Pereira Nunes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarceloNunes/mern-app-sample/issues"
+  },
+  "homepage": "https://github.com/MarceloNunes/mern-app-sample#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "escape-string-regexp": "^1.0.5",
+    "express": "^4.16.3",
+    "http-status": "^1.2.0",
+    "mongoose": "^5.2.4",
+    "mongoose-unique-validator": "^2.0.1",
+    "sha256": "^0.2.0",
+    "validator": "^10.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
