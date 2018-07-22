@@ -1,5 +1,5 @@
-import UsersController from '../controllers/usersController';
-import utils from './routerUtils';
+import UsersController from '../controllers/users.controller';
+import utils from '../utils/routers';
 
 export default (app) => {
   const usersController = new UsersController();

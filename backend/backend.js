@@ -1,7 +1,9 @@
-import './models/usersModel';
+import './models/users.model';
 
-import usersRouter from './routes/usersRouter';
+import authRouter from './routes/auth.router';
+import usersRouter from './routes/users.router';
 
 export default(app) => {
+  authRouter(app);
   usersRouter(app);
 };

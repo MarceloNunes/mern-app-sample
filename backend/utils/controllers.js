@@ -9,10 +9,15 @@ const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
   statusCode,
 });
 
-const errorResponse = (error, statusCode = HttpStatus.BAD_REQUEST) => ({
-  error: JSON.parse(JSON.stringify(error)),
-  statusCode,
-});
+const errorResponse = (error, statusCode = HttpStatus.BAD_REQUEST) => {
+  const response = { statusCode };
+
+  if (error) {
+    response.error = JSON.parse(JSON.stringify(error));
+  }
+
+  return response;
+};
 
 const getPaginationParams = (req) => {
   const limit = parseInt(req.query.limit, 10) || config.query.limit;

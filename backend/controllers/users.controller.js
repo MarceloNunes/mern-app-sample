@@ -2,7 +2,7 @@ import HttpStatus from 'http-status';
 import mongoose from 'mongoose';
 import sha256 from 'sha256';
 
-import utils from './controllersUtils';
+import utils from '../utils/controllers';
 
 const searchParams = ['firstName', 'lastName', 'email', 'location.zipCode'];
 const defaultSort = 'lastName';

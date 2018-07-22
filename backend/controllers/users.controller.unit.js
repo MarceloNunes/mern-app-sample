@@ -1,15 +1,16 @@
 import 'babel-polyfill';
 import chai from 'chai';
 import spies from 'chai-spies';
-import '../models/usersModel';
-import UsersController from '../controllers/usersController';
+import '../models/users.model';
+import UsersController from './users.controller';
 
-const userData = [
+export const userData = [
   { /* 0 */
     _id: '5b34595fb2d8be463e9d5aa4',
     email: 'ethan.addy@example.com',
     firstName: 'Ethan',
     lastName: 'Addy',
+    locator: '59b244a4847aae7e0e649827e5a795a65094c9be4e54f5d9d350fad2ea205cef',
     "password":"0d89f29a6cc60ae0d1deba005a4a936b53a4b60943a716525b6d7abba1cc051f",
   }, { /* 1 */
     _id: '5b345a1b36a7f74764d0d088',
@@ -74,7 +75,6 @@ describe('UserController:', () => {
         .to.have.been.called.with({ _id: '1234' });
 
       chai.expect(result).to.deep.equal({
-        error: null,
         statusCode: 404,
       });
     });
