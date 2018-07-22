@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import HttpStatus from 'http-status';
 import escapeStringRegExp from 'escape-string-regexp';
 
@@ -124,7 +125,6 @@ const standardGetById = async (Collection, req) => {
       _id: req.params && req.params.id,
     }));
   } catch (error) {
-    console.log(error);
     return errorResponse(null, HttpStatus.NOT_FOUND);
   }
 };
@@ -142,7 +142,7 @@ const standardListView = async (Collection, req, configParams) => {
 
     const metadata = getMetadata(req, configParams, count);
 
-    return defaultResponse({ metadata, data });
+    return { metadata, data, statusCode: HttpStatus.OK };
   } catch (error) {
     return errorResponse(error);
   }

@@ -4,9 +4,10 @@
   "description": "A sample React/Redux, Node.js, MongoDB application",
   "main": "index.js",
   "scripts": {
-    "babel-node": "babel-node --presets=env",
-    "start:dev": "nodemon --exec npm run babel-node -- ./index.js",
-    "test": "jest --config=jest.config.json"
+    "babel:node": "babel-node --presets=env",
+    "start:dev": "nodemon --exec npm run babel:node -- ./index.js",
+    "test:unit": "NODE_ENV=test mocha --watch --opts config/mocha-unit.opts **/*.unit.js",
+    "test": "jest --config=config/jest.config.json"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,10 @@
   },
   "homepage": "https://github.com/MarceloNunes/mern-app-sample#readme",
   "dependencies": {
+    "ajv": "^6.5.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "escape-string-regexp": "^1.0.5",
@@ -28,10 +31,28 @@
     "http-status": "^1.2.0",
     "mongoose": "^5.2.4",
     "mongoose-unique-validator": "^2.0.1",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "sha256": "^0.2.0",
     "validator": "^10.4.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.3"
+    "chai": "^4.1.2",
+    "chai-spies": "^1.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
+    "eslint": "^5.2.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "eslint-plugin-jest": "^21.18.0",
+    "eslint-plugin-react": "^7.10.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "jest": "^23.4.1",
+    "jest-mongoose-mock": "^1.1.3",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.3",
+    "react-test-renderer": "^16.4.1",
+    "webpack": "^4.16.1",
+    "webpack-dev-server": "^3.1.4"
   }
 }
