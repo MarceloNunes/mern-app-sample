@@ -12,7 +12,7 @@ export default {
 
     mongoose.Promise = global.Promise;
 
-    mongoose.connect(url)
+    mongoose.connect(url, { useNewUrlParser: true })
       .then(() => {
         console.log(`Sucessfully connected to MongoDB server on port ${serverPort}`);
       }).catch((error) => {
