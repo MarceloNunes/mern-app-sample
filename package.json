@@ -25,6 +25,7 @@
   "homepage": "https://github.com/MarceloNunes/mern-app-sample#readme",
   "dependencies": {
     "ajv": "^6.5.2",
+    "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
@@ -38,7 +39,7 @@
     "express": "^4.16.3",
     "http-status": "^1.2.0",
     "moment": "^2.22.2",
-    "mongoose": "^5.2.4",
+    "mongoose": "^5.2.5",
     "mongoose-unique-validator": "^2.0.1",
     "node-sass": "^4.9.2",
     "normalize.css": "^8.0.0",
