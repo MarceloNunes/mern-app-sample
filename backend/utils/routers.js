@@ -9,7 +9,7 @@ const displayResult = (res, promise) => {
 };
 
 const createUrl = (url) => {
-  return path.normalize(`/${config.baseUrl}/${url}`).replace('/', '').split('\\').join('/');
+  return path.normalize(`${config.baseUrl}/${url}`).replace('/', '').split('\\').join('/');
 };
 
 export default {

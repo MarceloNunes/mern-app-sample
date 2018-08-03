@@ -1,10 +1,12 @@
-import { LIST_USERS } from '../actions/users.action';
+import { USER_FETCH } from '../actions/actionTypes';
 
-export default function(state = [], action) {
+export const UserReducer = (state = [], action) => {
   switch (action.type) {
-    case LIST_USERS:
-    console.log(action)
-      return [ action.payload.data, ...state ]
-    }
-   return state;
+    case USER_FETCH:
+      return action.users;
+    default:
+      return state;
   }
+};
+
+export default UserReducer;
