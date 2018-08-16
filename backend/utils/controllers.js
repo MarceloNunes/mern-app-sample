@@ -21,14 +21,14 @@ const errorResponse = (error, statusCode = HttpStatus.BAD_REQUEST) => {
 
 const getPaginationParams = (req) => {
   const limit = parseInt(req.query.limit, 10) || config.query.limit;
-  const page = parseInt(req.query.page, 10) || 1;
-  const skip = (page - 1) * limit;
-  return { limit, page, skip };
+  const activePage = parseInt(req.query.activePage, 10) || 1;
+  const skip = (activePage - 1) * limit;
+  return { limit, activePage, skip };
 };
 
-const getPageUrl = (metadata, page) => {
+const getPageUrl = (metadata, activePage) => {
   const urlParams = {
-    page,
+    activePage,
     limit: metadata.limit,
     sort: metadata.sort,
     dir: metadata.dir,
@@ -111,13 +111,13 @@ const getMetadata = (req, params, count) => {
 
   metadata = Object.assign(metadata, { count, totalPages, sort, dir, filters });
 
-  if (metadata.page > 1) {
-    metadata.previousPage = getPageUrl(metadata, metadata.page - 1);
+  if (metadata.activePage > 1) {
+    metadata.previousPage = getPageUrl(metadata, metadata.activePage - 1);
     metadata.firstPage = getPageUrl(metadata, 1);
   }
 
-  if (metadata.page < totalPages) {
-    metadata.nextPage = getPageUrl(metadata, metadata.page + 1);
+  if (metadata.activePage < totalPages) {
+    metadata.nextPage = getPageUrl(metadata, metadata.activePage + 1);
     metadata.lastPage = getPageUrl(metadata, totalPages);
   }
 
@@ -143,11 +143,11 @@ const standardListView = async (Collection, req, configParams) => {
       .limit(queryParams.limit)
       .sort(queryParams.sort);
 
-    const count = await Collection.count(queryParams.projection);
+    const count = await Collection.countDocuments(queryParams.projection);
 
     const metadata = getMetadata(req, configParams, count);
 
-    return { metadata, data, statusCode: HttpStatus.OK };
+    return { data: {metadata, data}, statusCode: HttpStatus.OK };
   } catch (error) {
     return errorResponse(error);
   }
