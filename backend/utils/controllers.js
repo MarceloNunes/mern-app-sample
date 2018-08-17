@@ -30,7 +30,7 @@ const getPageUrl = (metadata, activePage) => {
   const urlParams = {
     activePage,
     limit: metadata.limit,
-    sort: metadata.sort,
+    sortBy: metadata.sortBy,
     dir: metadata.dir,
   };
 
@@ -44,12 +44,12 @@ const getPageUrl = (metadata, activePage) => {
 const getQueryParams = (req, params) => {
   const result = getPaginationParams(req);
 
-  const sortColumn = req.query.sort || params.defaultSort;
+  const sortColumn = req.query.sortBy || params.defaultSort;
   const sortDirection = parseInt(req.query.dir, 10) || 1;
-  const sort = {};
-  sort[sortColumn] = sortDirection;
+  const sortBy = {};
+  sortBy[sortColumn] = sortDirection;
 
-  const projection = {};
+  let projection = {};
 
   if (params.searchParams) {
     params.searchParams.forEach((key) => {
@@ -70,7 +70,15 @@ const getQueryParams = (req, params) => {
     });
   }
 
-  return Object.assign(result, { sort, projection });
+  if (Object.keys(projection).length > 0 && req.query.or) {
+    projection = { '$or' : Object.keys(projection).map((key) => {
+      const result = {};
+      result[key] = projection[key];
+      return result;
+    }) };
+  }
+
+  return Object.assign(result, { sortBy, projection });
 };
 
 const formatError = result => (result.errors ?
@@ -88,7 +96,7 @@ const getMetadata = (req, params, count) => {
   let metadata = getPaginationParams(req);
 
   const totalPages = Math.ceil(count / metadata.limit);
-  const sort = req.query.sort || params.defaultSort;
+  const sortBy = req.query.sortBy || params.defaultSort;
   const dir = parseInt(req.query.dir, 10) === -1 ? -1 : 1;
 
   const filters = {};
@@ -109,7 +117,7 @@ const getMetadata = (req, params, count) => {
     });
   }
 
-  metadata = Object.assign(metadata, { count, totalPages, sort, dir, filters });
+  metadata = Object.assign(metadata, { count, totalPages, sortBy, dir, filters });
 
   if (metadata.activePage > 1) {
     metadata.previousPage = getPageUrl(metadata, metadata.activePage - 1);
@@ -141,7 +149,7 @@ const standardListView = async (Collection, req, configParams) => {
     const data = await Collection.find(queryParams.projection)
       .skip(queryParams.skip)
       .limit(queryParams.limit)
-      .sort(queryParams.sort);
+      .sort(queryParams.sortBy);
 
     const count = await Collection.countDocuments(queryParams.projection);
 

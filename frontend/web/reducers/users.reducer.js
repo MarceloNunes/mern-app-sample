@@ -9,4 +9,13 @@ export const UserReducer = (state = [], action) => {
   }
 };
 
+export const UserMetaReducer = (state = [], action) => {
+  switch (action.type) {
+    case USER_FETCH:
+      return action.usersMeta;
+    default:
+      return state;
+  }
+};
+
 export default UserReducer;

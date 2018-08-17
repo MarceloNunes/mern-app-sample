@@ -13,7 +13,7 @@ const getQueryString = (apiUrl, params) => {
 export const fetchAllUsers = (params) =>
   (dispatch) => axios.get(getQueryString(apiUrl, params))
     .then(response => {
-      dispatch(fetchUsers(response.data));
+      dispatch(fetchUsers(response.data.data, response.data.metadata));
     })
     .catch(error => {
       throw(error);
