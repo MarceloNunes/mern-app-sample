@@ -160,6 +160,19 @@ const standardListView = async (Collection, req, configParams) => {
     return errorResponse(error);
   }
 };
+const checkRequiredError = (fieldName, value, error) => {
+  if (!value) {
+    const result = {
+      type: 'required'
+    };
+
+    error = error || {};
+    error[fieldName] = result;
+  }
+
+  return error;
+}
+
 
 export default {
   defaultResponse,
@@ -169,4 +182,5 @@ export default {
   getMetadata,
   standardGetById,
   standardListView,
+  checkRequiredError
 };

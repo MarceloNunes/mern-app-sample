@@ -10,9 +10,17 @@ const getLocator = (email, password) => sha256.x2(`${email.toLowerCase()}-${pass
 export default class {
   constructor() {
     this.User = mongoose.model('users');
+    this.Session = mongoose.model('sessions');
   }
 
   async login(req) {
+    const checkRequired = utils.checkRequiredError('password', req.body.password,
+      utils.checkRequiredError('email', req.body.email));
+
+    if (checkRequired) {
+      return utils.errorResponse(checkRequired, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     const locator = getLocator(req.body.email, hashPassword(req.body.password));
 
     try {
@@ -24,7 +32,21 @@ export default class {
         return utils.errorResponse(null, HttpStatus.UNAUTHORIZED);
       }
 
-      return utils.defaultResponse(user, HttpStatus.OK);
+      const session = await this.Session.create({
+        user: {
+          _id: user._id,
+          administrator: user.administrator,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          picture: user.picture
+         },
+         remoteAddress: req.connection.remoteAddress
+      });
+
+      console.log(session);
+
+      return utils.defaultResponse(session, HttpStatus.OK);
     } catch (error) {
       return utils.errorResponse(error, HttpStatus.UNPROCESSABLE_ENTITY);
     }

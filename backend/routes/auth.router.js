@@ -4,6 +4,6 @@ import utils from '../utils/routers';
 export default (app) => {
   const authController = new AuthController();
 
-  app.route('/auth')
+  app.route(utils.createUrl('/auth'))
     .post((req, res) => utils.displayResult(res, authController.login(req)));
 };
