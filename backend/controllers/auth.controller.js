@@ -24,9 +24,7 @@ export default class {
     const locator = getLocator(req.body.email, hashPassword(req.body.password));
 
     try {
-      const user = await this.User.findOne({
-        locator,
-      });
+      const user = await this.User.findOne({ locator });
 
       if (!user) {
         return utils.errorResponse(null, HttpStatus.UNAUTHORIZED);
@@ -43,8 +41,6 @@ export default class {
          },
          remoteAddress: req.connection.remoteAddress
       });
-
-      console.log(session);
 
       return utils.defaultResponse(session, HttpStatus.OK);
     } catch (error) {
