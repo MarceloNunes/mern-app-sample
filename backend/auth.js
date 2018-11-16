@@ -6,24 +6,26 @@ import {
 
 import config from '../config/config';
 
-const jwt = 'jwt';
-
-export default (aoo) => {
+export default (app) => {
   const opts = {
     secretOrKey: config.jwtSecret,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme(jwt)
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
   };
 
-  const strategy = new Strategy(opts, (payload, done) => {
-    console.log(opts);
-    console.log(payload);
-    return done(null, true);
+  passport.serializeUser(function (user, done) {
+    done(null, user);
   });
 
-  passport.use(strategy);
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
+
+  passport.use(new Strategy(opts, function (payload, done) {
+    return done(null, payload);
+  }));
 
   return {
     initialize: () => passport.initialize(),
-    authenticate: () => passport.authenticate(jwt, config.jwtSession)
-  }
+    authenticate: () => passport.authenticate('jwt')
+  };
 }

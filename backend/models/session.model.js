@@ -10,6 +10,8 @@ const SessionSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     picture: { type: String },
   },
+  token: { type: String, required: false },
+  iat: { type: Number, required: false },
   remoteAddress: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   closedAt: { type: Date },

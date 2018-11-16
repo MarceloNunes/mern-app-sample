@@ -1,8 +1,10 @@
 import HttpStatus from 'http-status';
 import mongoose from 'mongoose';
 import sha256 from 'sha256';
+import jwt from 'jsonwebtoken';
 
 import utils from '../utils/controllers';
+import config from '../../config/config';
 
 const hashPassword = password => sha256.x2(password);
 const getLocator = (email, password) => sha256.x2(`${email.toLowerCase()}-${password}`);
@@ -30,7 +32,7 @@ export default class {
         return utils.errorResponse(null, HttpStatus.UNAUTHORIZED);
       }
 
-      const session = await this.Session.create({
+      let session = await this.Session.create({
         user: {
           _id: user._id,
           administrator: user.administrator,
@@ -40,6 +42,24 @@ export default class {
           picture: user.picture
          },
          remoteAddress: req.connection.remoteAddress
+      });
+
+      const token = await jwt.sign({
+        session,
+      }, config.jwtSecret);
+
+      const decodedSession = jwt.decode(token);
+
+      await this.Session.update(
+        { _id: session._id },
+        { $set: {
+          token,
+          iat: decodedSession.iat
+        }}
+      )
+
+      session = await this.Session.findOne({
+        _id: session._id
       });
 
       return utils.defaultResponse(session, HttpStatus.OK);
