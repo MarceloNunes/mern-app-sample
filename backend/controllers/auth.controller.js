@@ -26,7 +26,9 @@ export default class {
     const locator = getLocator(req.body.email, hashPassword(req.body.password));
 
     try {
-      const user = await this.User.findOne({ locator });
+      const user = await this.User.findOne({
+        locator
+      });
 
       if (!user) {
         return utils.errorResponse(null, HttpStatus.UNAUTHORIZED);
@@ -40,8 +42,8 @@ export default class {
           firstName: user.firstName,
           lastName: user.lastName,
           picture: user.picture
-         },
-         remoteAddress: req.connection.remoteAddress
+        },
+        remoteAddress: req.connection.remoteAddress
       });
 
       const token = await jwt.sign({
@@ -50,19 +52,48 @@ export default class {
 
       const decodedSession = jwt.decode(token);
 
-      await this.Session.update(
-        { _id: session._id },
-        { $set: {
+      await this.Session.update({
+        _id: session._id
+      }, {
+        $set: {
           token,
           iat: decodedSession.iat
-        }}
-      )
+        }
+      })
 
       session = await this.Session.findOne({
         _id: session._id
       });
 
       return utils.defaultResponse(session, HttpStatus.OK);
+    } catch (error) {
+      return utils.errorResponse(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+  }
+
+  async logout(req) {
+    try {
+      const iat = req.user && req.user.iat;
+
+      const session = await this.Session.findOne({
+        iat
+      });
+
+      if (session) {
+        const result = await this.Session.update({
+          _id: session._id
+        }, {
+          $set: {
+            active: false,
+          }
+        });
+
+        return {
+          statusCode: HttpStatus.OK
+        };
+      } else {
+        return utils.errorResponse(error, HttpStatus.NOT_FOUND);
+      }
     } catch (error) {
       return utils.errorResponse(error, HttpStatus.UNPROCESSABLE_ENTITY);
     }

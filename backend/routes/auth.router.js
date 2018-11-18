@@ -6,4 +6,8 @@ export default (app) => {
 
   app.route(utils.createUrl('/auth'))
     .post((req, res) => utils.displayResult(res, authController.login(req)));
+
+  app.route(utils.createUrl('/auth/logout'))
+    .all(app.auth.authenticate())
+    .get((req, res) => utils.displayResult(res, authController.logout(req)));
 };
