@@ -88,11 +88,15 @@ export default class {
           }
         });
 
-        return {
-          statusCode: HttpStatus.OK
-        };
+        if (result.ok) {
+          return {
+            statusCode: HttpStatus.OK
+          };  
+        } else {
+          return utils.errorResponse(result, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
       } else {
-        return utils.errorResponse(error, HttpStatus.NOT_FOUND);
+        return utils.errorResponse({}, HttpStatus.NOT_FOUND);
       }
     } catch (error) {
       return utils.errorResponse(error, HttpStatus.UNPROCESSABLE_ENTITY);
