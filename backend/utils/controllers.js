@@ -92,6 +92,22 @@ const formatError = result => (result.errors ?
     },
   });
 
+const getHeader = (metadata) => {
+  return metadata && Object.keys(metadata).reduce((header, key) => {
+    if (key === 'filters') {
+      if (metadata.filters) {
+        Object.keys(metadata.filters).forEach((filedName) => {
+          header['Meta-Filter-' + filedName[0].toUpperCase() + filedName.substring(1)] = metadata.filters[filedName];
+        });
+      }
+    } else {
+      header['Meta-' + key[0].toUpperCase() + key.substring(1)] = metadata[key];
+    }
+
+    return header;
+  }, {});
+};
+
 const getMetadata = (req, params, count) => {
   let metadata = getPaginationParams(req);
 
@@ -155,11 +171,16 @@ const standardListView = async (Collection, req, configParams) => {
 
     const metadata = getMetadata(req, configParams, count);
 
-    return { data: {metadata, data}, statusCode: HttpStatus.OK };
+    return {
+      data,
+      statusCode: HttpStatus.OK,
+      header: getHeader(metadata)
+    };
   } catch (error) {
     return errorResponse(error);
   }
 };
+
 const checkRequiredError = (fieldName, value, error) => {
   if (!value) {
     const result = {

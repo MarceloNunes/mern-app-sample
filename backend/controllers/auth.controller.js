@@ -91,7 +91,7 @@ export default class {
         if (result.ok) {
           return {
             statusCode: HttpStatus.OK
-          };  
+          };
         } else {
           return utils.errorResponse(result, HttpStatus.UNPROCESSABLE_ENTITY);
         }
