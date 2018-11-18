@@ -1,4 +1,5 @@
 import passport from 'passport';
+import mongoose from 'mongoose';
 import {
   Strategy,
   ExtractJwt
@@ -6,22 +7,32 @@ import {
 
 import config from '../config/config';
 
-export default (app) => {
+export default () => {
   const opts = {
     secretOrKey: config.jwtSecret,
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
   };
 
-  passport.serializeUser(function (user, done) {
-    done(null, user);
+  passport.serializeUser((payload, done) => {
+    done(null, payload);
   });
 
-  passport.deserializeUser(function (user, done) {
-    done(null, user);
+  passport.deserializeUser((payload, done) => {
+    done(null, payload);
   });
 
-  passport.use(new Strategy(opts, function (payload, done) {
-    return done(null, payload);
+  passport.use(new Strategy(opts, async (payload, done) => {
+    const SessionModel = mongoose.model('sessions');
+
+    const session = await SessionModel.findOne({
+      iat: payload && payload.iat
+    });
+
+    if (session && session.active) {
+      return done(null, payload);
+    } else {
+      return done(null, false);
+    }
   }));
 
   return {
