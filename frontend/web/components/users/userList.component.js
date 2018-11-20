@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { UserListItem } from './userListItem.component';
-import { fetchAllUsers } from '../../selectors/Users.selector';
+import { fetchAllUsers } from '../../selectors/users.selector';
 
 import {
   Container,

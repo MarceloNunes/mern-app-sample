@@ -4,7 +4,7 @@
   "description": "A sample React/Redux, Node.js, MongoDB application",
   "main": "index.js",
   "scripts": {
-    "build:dev": "webpack -p --env development",
+    "build:dev": "webpack -p --env development --watch",
     "build:prod": "webpack -p --env production",
     "babel:node": "babel-node --presets=env",
     "test": "jest --config=config/jest.config.json",

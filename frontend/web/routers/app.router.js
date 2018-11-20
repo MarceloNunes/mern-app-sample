@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import LoginPage from '../components/login.component';
+import LoginPage from '../components/login/loginPage.component';
 import UserListPage from '../components/users/userListPage.component';
 
 const AppRouter = () => (
