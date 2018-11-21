@@ -71,15 +71,31 @@ export default class {
     }
   }
 
-  async logout(req) {
+  async getSessionInfo(req) {
     try {
-      const iat = req.user && req.user.iat;
-
       const session = await this.Session.findOne({
-        iat
+        'user.email': req.user && req.user.session.user.email,
+        iat: req.user && req.user.iat
       });
 
       if (session) {
+        return utils.defaultResponse(session, HttpStatus.OK);
+      } else {
+        return utils.errorResponse({}, HttpStatus.NOT_FOUND);
+      }
+    } catch (error) {
+      return utils.errorResponse(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+  }
+
+  async logout(req) {
+    try {
+      const session = await this.Session.findOne({
+        'user.email': req.user && req.user.session.user.email,
+        iat: req.user && req.user.iat
+      });
+
+      if (session && session.active) {
         const result = await this.Session.update({
           _id: session._id
         }, {

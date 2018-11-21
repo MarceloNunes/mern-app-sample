@@ -37,6 +37,8 @@ export class LoginPage extends React.Component {
       email: this.state.email,
       password: this.state.password
     }).then(() => {
+      localStorage.setItem('SESSION_USER_EMAIL', this.props.session.user.email);
+      localStorage.setItem('SESSION_IAT', this.props.session.iat);
       this.props.history.push("/users/");
     }).catch(error => {
       // TODO - Show appropriate error messages

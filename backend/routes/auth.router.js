@@ -10,4 +10,8 @@ export default (app) => {
   app.route(utils.createUrl('/auth/logout'))
     .all(app.auth.authenticate())
     .get((req, res) => utils.displayResult(res, authController.logout(req)));
+
+  app.route(utils.createUrl('/auth/session'))
+  .all(app.auth.authenticate())
+  .get((req, res) => utils.displayResult(res, authController.getSessionInfo(req)));
 };
