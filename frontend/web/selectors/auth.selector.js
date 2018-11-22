@@ -1,6 +1,8 @@
 import axios from 'axios';
 import config from '../../../config/config';
-import { login } from '../actions/Auth.actions';
+import {
+  login
+} from '../actions/Auth.actions';
 
 export const sessionLogin = (data) =>
   (dispatch) => axios({
@@ -12,5 +14,5 @@ export const sessionLogin = (data) =>
     dispatch(login(response.data));
   })
   .catch(error => {
-    throw(error);
+    throw (error);
   });
