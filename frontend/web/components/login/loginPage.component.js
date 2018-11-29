@@ -49,7 +49,7 @@ export class LoginPage extends React.Component {
 
   render() {
     return (
-      <div style={{ width: '100%', height: '100vh', backgroundImage:'url(https://picsum.photos/2000/3000/?random)'}}>
+      <div id='a12345' className='login-page'>
         <Container>
           <Grid textAlign='center' verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>

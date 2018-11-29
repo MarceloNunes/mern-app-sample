@@ -8,6 +8,7 @@ import AppRouter from './routers/app.router';
 import rootReducer from './reducers/RootReducer';
 
 import 'normalize.css/normalize.css';
+import './styles/styles.scss';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
